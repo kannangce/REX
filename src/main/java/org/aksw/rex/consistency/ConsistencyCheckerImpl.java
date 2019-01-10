@@ -65,7 +65,7 @@ public class ConsistencyCheckerImpl implements ConsistencyChecker{
 	private static final NamedClass OWL_THING = new NamedClass("http://www.w3.org/2002/07/owl#Thing");
 	
 	private double accuracyThreshold = 0.7;
-	private String cacheDirectory = "sparql-cache";
+	private String cacheDirectory = "./sparql-cache";
 	
 	private SparqlEndpoint endpoint; 
 	private SparqlEndpointKS ks;

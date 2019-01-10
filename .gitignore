@@ -15,6 +15,7 @@ target/*
 # Index of Surface Forms #
 index/*
 /target
+/bin
 
 # HTML CRAWLER INDEX #
 htmlIndex/*

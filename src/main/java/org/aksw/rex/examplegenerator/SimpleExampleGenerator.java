@@ -49,7 +49,7 @@ public class SimpleExampleGenerator implements ExampleGenerator {
 	protected int maxNrOfPositiveExamples = 1000;
 	protected int maxNrOfNegativeExamples = 1000;
 	private QueryExecutionFactory qef;
-	private String cacheDirectory = "cache/sparql";
+	private String cacheDirectory = "./cache/sparql";
 	Random rnd = new Random(123);
 
 	/*
