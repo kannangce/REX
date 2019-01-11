@@ -12,7 +12,8 @@ import org.aksw.jena_sparql_api.cache.core.QueryExecutionFactoryCacheEx;
 import org.aksw.jena_sparql_api.cache.extra.CacheBackend;
 import org.aksw.jena_sparql_api.cache.extra.CacheFrontend;
 import org.aksw.jena_sparql_api.cache.extra.CacheFrontendImpl;
-import org.aksw.jena_sparql_api.cache.h2.CacheCoreH2;
+import org.aksw.jena_sparql_api.cache.h2.CacheUtilsH2;
+import org.aksw.jena_sparql_api.cache.staging.CacheBackendDataSource;
 import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
 import org.aksw.jena_sparql_api.http.QueryExecutionFactoryHttp;
 import org.aksw.rex.util.Pair;
@@ -65,18 +66,13 @@ public class SimpleExampleGenerator implements ExampleGenerator {
 		if (cacheDirectory != null) {
 			try {
 				long timeToLive = TimeUnit.DAYS.toMillis(30);
-				CacheBackend cacheBackend = CacheCoreH2.create(cacheDirectory, timeToLive, true);
-				CacheFrontend cacheFrontend = new CacheFrontendImpl(cacheBackend);
-				qef = new QueryExecutionFactoryCacheEx(qef, cacheFrontend);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
+				qef = CacheUtilsH2.createQueryExecutionFactory(qef, cacheDirectory, true, timeToLive);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		// qef = new QueryExecutionFactoryPaginated(qef, 10000);
-
 		reasoner = new SPARQLReasoner(new SparqlEndpointKS(endpoint), cacheDirectory);
+		System.out.println("");
 	}
 
 	/*
