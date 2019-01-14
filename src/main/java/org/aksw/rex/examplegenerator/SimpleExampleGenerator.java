@@ -1,6 +1,5 @@
 package org.aksw.rex.examplegenerator;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -8,15 +7,11 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.aksw.jena_sparql_api.cache.core.QueryExecutionFactoryCacheEx;
-import org.aksw.jena_sparql_api.cache.extra.CacheBackend;
-import org.aksw.jena_sparql_api.cache.extra.CacheFrontend;
-import org.aksw.jena_sparql_api.cache.extra.CacheFrontendImpl;
 import org.aksw.jena_sparql_api.cache.h2.CacheUtilsH2;
-import org.aksw.jena_sparql_api.cache.staging.CacheBackendDataSource;
 import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
 import org.aksw.jena_sparql_api.http.QueryExecutionFactoryHttp;
 import org.aksw.rex.util.Pair;
+import org.aksw.rex.util.SPARQLUtil;
 import org.apache.log4j.Logger;
 import org.dllearner.core.owl.NamedClass;
 import org.dllearner.core.owl.ObjectProperty;
@@ -72,7 +67,6 @@ public class SimpleExampleGenerator implements ExampleGenerator {
 			}
 		}
 		reasoner = new SPARQLReasoner(new SparqlEndpointKS(endpoint), cacheDirectory);
-		System.out.println("");
 	}
 
 	/*
@@ -419,7 +413,7 @@ public class SimpleExampleGenerator implements ExampleGenerator {
 	}
 
 	public static void main(String[] args) throws Exception {
-		SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpedia();
+		SparqlEndpoint endpoint = SPARQLUtil.getEndpoint();
 		Model model = ModelFactory.createDefaultModel();
 		Property property = model.createProperty("http://dbpedia.org/ontology/director");
 		ExampleGenerator gen = new SimpleExampleGenerator();

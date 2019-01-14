@@ -23,6 +23,7 @@ import org.aksw.rex.results.ExtractionResult;
 import org.aksw.rex.uris.URIGenerator;
 import org.aksw.rex.uris.URIGeneratorAGDISTIS;
 import org.aksw.rex.util.Pair;
+import org.aksw.rex.util.SPARQLUtil;
 import org.aksw.rex.xpath.XPathLearner;
 import org.aksw.rex.xpath.alfred.ALFREDXPathLearner;
 import org.dllearner.kb.sparql.SparqlEndpoint;
@@ -77,7 +78,7 @@ public class RexController {
         // ResourceFactory.createProperty("http://dbpedia.org/ontology/author");
 
         // The SPARQL endpoint provides examples as well as an underlying schema to validate generated triples
-        SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpediaLiveOpenLink();
+        SparqlEndpoint endpoint = SPARQLUtil.getEndpoint();
         log.info("ENDPOINT: {} ", endpoint.getURL());
         // The SimpleExampleGenerator retrieves 100 random triples from the underlying knowledge base with property p
         ExampleGenerator exampleGenerator = new SimpleExampleGenerator();
@@ -87,7 +88,7 @@ public class RexController {
 
         // The ManualDomainIdentifier provides a starting point domain for the crawler. REX would also be capable of
         // identifying a domain only by examples.
-        DomainIdentifier domainIdentifier = new ManualDomainIdentifier(new URL("http://www.imdb.com/title/"));
+        DomainIdentifier domainIdentifier = new ManualDomainIdentifier(new URL("https://www.imdb.com/search/title"));
         // DomainIdentifier domainIdentifier = new ManualDomainIdentifier(new
         // URL("http://www.goodreads.com/author/"));
 
