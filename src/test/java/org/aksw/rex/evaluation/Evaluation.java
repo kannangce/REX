@@ -44,7 +44,7 @@ public class Evaluation {
     	exampleGenerator.setEndpoint(endpoint);
     	exampleGenerator.setPredicate(property);
     	
-    	DomainIdentifier domainIdentifier = new ManualDomainIdentifier(new URL("http://www.imdb.com/title/"));
+    	DomainIdentifier domainIdentifier = new ManualDomainIdentifier(new URL("https://www.imdb.com/search/title/"));
     	
     	CrawlIndex crawlIndex = new CrawlIndex("imdb-index/");
     	XPathExtractor xPathExtractor = new XPathExtractor(crawlIndex);

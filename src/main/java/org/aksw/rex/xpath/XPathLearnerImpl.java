@@ -57,7 +57,7 @@ public class XPathLearnerImpl implements XPathLearner{
 		XPathFactory factory = XPathFactory.newInstance();
 		xpath = factory.newXPath();
 		
-		surfaceFormGenerator = new SurfaceFormGenerator(endpoint, "sparql-cache");
+		surfaceFormGenerator = new SurfaceFormGenerator(endpoint, "./sparql-cache");
 	}
 
 	/* (non-Javadoc)

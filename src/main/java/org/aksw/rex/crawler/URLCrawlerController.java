@@ -54,8 +54,8 @@ public class URLCrawlerController {
 		// log.error("goodreads warf einen Fehler");
 		// }
 		Map<CrawlIndex, Set<String>> index2URLs = new HashMap<CrawlIndex, Set<String>>();
-		index2URLs.put(new CrawlIndex("imdb-title-index"), Sets.newHashSet("http://www.imdb.com/title/tt([0-9])*/$"));
-		index2URLs.put(new CrawlIndex("imdb-name-index"), Sets.newHashSet("http://www.imdb.com/name/nm([0-9])*/$"));
+		index2URLs.put(new CrawlIndex("imdb-title-index"), Sets.newHashSet("http://www.imdb.com/search/title/tt([0-9])*/$"));
+		index2URLs.put(new CrawlIndex("imdb-name-index"), Sets.newHashSet("http://www.imdb.com/search/name/nm([0-9])*/$"));
 		CrawlerConfig crawlIndexConfig = new CrawlerConfig("http://www.imdb.com/", index2URLs);
 		URLCrawlerController crawlControl = new URLCrawlerController("crawlIMDB", crawlIndexConfig);
 		Random r = new Random();

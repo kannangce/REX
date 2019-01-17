@@ -78,7 +78,7 @@ public class RexController {
         // ResourceFactory.createProperty("http://dbpedia.org/ontology/author");
 
         // The SPARQL endpoint provides examples as well as an underlying schema to validate generated triples
-        SparqlEndpoint endpoint = SPARQLUtil.getEndpoint();
+        SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpediaLiveOpenLink();
         log.info("ENDPOINT: {} ", endpoint.getURL());
         // The SimpleExampleGenerator retrieves 100 random triples from the underlying knowledge base with property p
         ExampleGenerator exampleGenerator = new SimpleExampleGenerator();

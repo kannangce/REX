@@ -289,7 +289,7 @@ public class SimpleExampleGenerator implements ExampleGenerator {
 				outerOffset = rnd.nextInt(propCnt);
 				// let (s p o) be in K, we get (s' p o) where s' is in the
 				// domain of p and (s' p o) is not in K
-				query = new ParameterizedSparqlString("SELECT ?s_false ?o WHERE " + "{?s_false a ?domain.  FILTER NOT EXISTS {?s_false ?p ?o.}" + "{SELECT ?o WHERE { ?s ?p ?o.} LIMIT 1 OFFSET " + innerOffset + "}" + "} LIMIT 1 OFFSET " + outerOffset);
+				query = new ParameterizedSparqlString("SELECT ?s_false ?o WHERE " + "{?s_false a ?domain.  FILTER NOT EXISTS {?s_false ?p ?o.}" + "{SELECT ?o WHERE { ?s ?p ?o.} LIMIT 1}" + "} LIMIT 1");
 				query.setParam("p", property);
 				query.setParam("domain", domain);
 				rs = executeSelectQuery(query.asQuery());
@@ -413,7 +413,7 @@ public class SimpleExampleGenerator implements ExampleGenerator {
 	}
 
 	public static void main(String[] args) throws Exception {
-		SparqlEndpoint endpoint = SPARQLUtil.getEndpoint();
+		SparqlEndpoint endpoint = SparqlEndpoint.getEndpointDBpediaLiveOpenLink();
 		Model model = ModelFactory.createDefaultModel();
 		Property property = model.createProperty("http://dbpedia.org/ontology/director");
 		ExampleGenerator gen = new SimpleExampleGenerator();
