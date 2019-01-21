@@ -54,24 +54,50 @@ public class URLCrawlerController {
 		// log.error("goodreads warf einen Fehler");
 		// }
 		Map<CrawlIndex, Set<String>> index2URLs = new HashMap<CrawlIndex, Set<String>>();
-		index2URLs.put(new CrawlIndex("imdb-title-index"), Sets.newHashSet("http://www.imdb.com/search/title/tt([0-9])*/$"));
-		index2URLs.put(new CrawlIndex("imdb-name-index"), Sets.newHashSet("http://www.imdb.com/search/name/nm([0-9])*/$"));
-		CrawlerConfig crawlIndexConfig = new CrawlerConfig("http://www.imdb.com/", index2URLs);
+		index2URLs.put(new CrawlIndex("imdb-title-index"), Sets.newHashSet("https://www.imdb.com/title/tt([0-9])*/$"));
+		index2URLs.put(new CrawlIndex("imdb-name-index"), Sets.newHashSet("https://www.imdb.com/name/nm([0-9])*/$"));
+		CrawlerConfig crawlIndexConfig = new CrawlerConfig("https://www.imdb.com/", index2URLs);
 		URLCrawlerController crawlControl = new URLCrawlerController("crawlIMDB", crawlIndexConfig);
 		Random r = new Random();
 		// TODO correct number format
-		for (int i = 0; i < 50000; i++) {
+		for (int i = 0; i < 100; i++) {
 			int x = r.nextInt(9999999);
 			DecimalFormat df = new DecimalFormat("0000000");
 			df.format(x);
-			crawlControl.addSeed("http://www.imdb.com/title/tt" + x);
+			crawlControl.addSeed("https://www.imdb.com/title/tt" + x + "/");
 		}
-		for (int i = 0; i < 50000; i++) {
+		for (int i = 0; i < 100; i++) {
 			int x = r.nextInt(9999999);
 			DecimalFormat df = new DecimalFormat("0000000");
 			df.format(x);
-			crawlControl.addSeed("http://www.imdb.com/name/nm" + x);
+			crawlControl.addSeed("https://www.imdb.com/name/nm" + x + "/");
 		}
+		
+		// TODO: The below are the URIs of movie and directors for the first
+		// 11 results from the dbpedia
+		crawlControl.addSeed("https://www.imdb.com/title/tt0057925/");
+		crawlControl.addSeed("https://www.imdb.com/name/nm0005062/");
+		crawlControl.addSeed("https://www.imdb.com/title/tt0475293/");
+		crawlControl.addSeed("https://www.imdb.com/name/nm0650905/");
+		crawlControl.addSeed("https://www.imdb.com/title/tt0010006/");
+		crawlControl.addSeed("https://www.imdb.com/name/nm0730018/");
+		crawlControl.addSeed("https://www.imdb.com/title/tt0058805/");
+		crawlControl.addSeed("https://www.imdb.com/name/nm0082676/");
+		crawlControl.addSeed("https://www.imdb.com/title/tt0425061/");
+		crawlControl.addSeed("https://www.imdb.com/name/nm0781842/");
+		crawlControl.addSeed("https://www.imdb.com/title/tt0036119/");
+		crawlControl.addSeed("https://www.imdb.com/name/nm0360253/");
+		crawlControl.addSeed("https://www.imdb.com/title/tt0047343/");
+		crawlControl.addSeed("https://www.imdb.com/name/nm0360253/");
+		crawlControl.addSeed("https://www.imdb.com/title/tt0068112/");
+		crawlControl.addSeed("https://www.imdb.com/name/nm0360253/");
+		crawlControl.addSeed("https://www.imdb.com/title/tt0048186/");
+		crawlControl.addSeed("https://www.imdb.com/name/nm0293989/");
+		crawlControl.addSeed("https://www.imdb.com/title/tt0264790/");
+		crawlControl.addSeed("https://www.imdb.com/name/nm0463598/");
+		crawlControl.addSeed("https://www.imdb.com/title/tt0451787/");
+		crawlControl.addSeed("https://www.imdb.com/name/nm0698184/");
+		
 		crawlControl.startCrawler();
 
 		// Wait for 30 seconds
@@ -160,6 +186,7 @@ public class URLCrawlerController {
 		config.setIncludeBinaryContentInCrawling(false);
 		config.setUserAgentString(userAgentName);
 		config.setFollowRedirects(true);
+		config.setIncludeHttpsPages(true);
 		// config.setPolitenessDelay(5000);
 		// config.setResumableCrawling(true);
 		/*

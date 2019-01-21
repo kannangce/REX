@@ -11,7 +11,6 @@ import org.aksw.jena_sparql_api.cache.h2.CacheUtilsH2;
 import org.aksw.jena_sparql_api.core.QueryExecutionFactory;
 import org.aksw.jena_sparql_api.http.QueryExecutionFactoryHttp;
 import org.aksw.rex.util.Pair;
-import org.aksw.rex.util.SPARQLUtil;
 import org.apache.log4j.Logger;
 import org.dllearner.core.owl.NamedClass;
 import org.dllearner.core.owl.ObjectProperty;
@@ -30,7 +29,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 /**
- * generates simple positive and negativ examples for a given predicate using
+ * generates simple positive and negative examples for a given predicate using
  * range and domain expressions
  * 
  * @author Lorenz Buehmann

@@ -88,13 +88,13 @@ public class RexController {
 
         // The ManualDomainIdentifier provides a starting point domain for the crawler. REX would also be capable of
         // identifying a domain only by examples.
-        DomainIdentifier domainIdentifier = new ManualDomainIdentifier(new URL("https://www.imdb.com/search/title"));
+        DomainIdentifier domainIdentifier = new ManualDomainIdentifier(new URL("https://www.imdb.com/title"));
         // DomainIdentifier domainIdentifier = new ManualDomainIdentifier(new
         // URL("http://www.goodreads.com/author/"));
 
         // The CrawlIndex is a LUCENE 4.X Index which will store the crawled information and provide it to the
         // XPATHLearner.
-        CrawlIndex crawlIndex = new CrawlIndex("imdb-title-index/");
+        CrawlIndex crawlIndex = new CrawlIndex("imdb-title-index");
 
         // Our XPATHLearner learns a pair of XPATHs containing s,o for the given p
         XPathLearner xPathLearner = new ALFREDXPathLearner(crawlIndex);
