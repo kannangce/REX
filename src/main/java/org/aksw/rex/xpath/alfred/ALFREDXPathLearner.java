@@ -1,5 +1,6 @@
 package org.aksw.rex.xpath.alfred;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +30,10 @@ import alfcore.AlfCoreFacade;
 import alfcore.AlfCoreFactory;
 
 import com.hp.hpl.jena.rdf.model.Resource;
+
 /**
- * used to learn Xpaths from an index and a predicate. Uses Alfrex as underlying algorithm.
+ * Implementation of {@link XPathLearner} using Alfrex as underlying algorithm.
+ * 
  * @author d.qui
  *
  */
@@ -54,9 +57,7 @@ public class ALFREDXPathLearner implements XPathLearner {
 		this(crawlIndex, 10);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.aksw.rex.xpath.XPathLearner#getXPathExpressions(java.util.Set, java.util.Set, java.net.URL)
-	 */
+
 	@Override
 	public List<Pair<XPathRule, XPathRule>> getXPathExpressions(Set<Pair<Resource, Resource>> posExamples, URL Domain) {
 		List<Pair<XPathRule, XPathRule>> res = new LinkedList<Pair<XPathRule, XPathRule>>();
@@ -88,15 +89,14 @@ public class ALFREDXPathLearner implements XPathLearner {
 
 	private Rule learnXPath(Map<String, List<String>> page2value, List<Page> pages, Page firstPage) {
 		AlfCoreFacade facade = AlfCoreFactory.getSystemFromConfiguration(5, 1, 1, 10000, "Random", 0.55, this.i);
-		
+
 		facade.setUp("DBPedia", new MaterializedPageSet(pages));
-		
+
 		RuleSet rules = facade.firstSamples(page2value);
-		
-		
+
 		Rule res = rules.getAllRules().get(0);
-		log.debug("Rule: "+res+" size:"+rules.getNumberOfRules());
-		log.debug("Rule: "+res+" size:"+rules);
+		log.debug("Rule: " + res + " size:" + rules.getNumberOfRules());
+		log.debug("Rule: " + res + " size:" + rules);
 
 		if (this.samplerLeft == null) {
 			this.samplerLeft = generateSampler(rules);
@@ -107,7 +107,8 @@ public class ALFREDXPathLearner implements XPathLearner {
 		// TODO apply sampler on all sub-domain pages
 		// sampler.find( ??? );
 		// this.log.info("N represented pages: "+sampler.getRepresentedPages().size());
-		// this.log.info("N non represented pages: "+sampler.getNonRepresentedPages().size()+" (representative: "+
+		// this.log.info("N non represented pages:
+		// "+sampler.getNonRepresentedPages().size()+" (representative: "+
 		// sampler.getRepresentativePages().size()+")");
 		return res;
 	}
@@ -129,7 +130,7 @@ public class ALFREDXPathLearner implements XPathLearner {
 	}
 
 	private ALFREDSampler generateSampler(RuleSet rules) {
-		
+
 		List<List<Rule>> rulesList = new LinkedList<List<Rule>>();
 		// build rulesSets - TODO is it always together?
 		rulesList.add(rules.getAllRules());
@@ -138,30 +139,38 @@ public class ALFREDXPathLearner implements XPathLearner {
 		return sampler;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.aksw.rex.xpath.XPathLearner#getExtractionResults(java.util.List, java.net.URL)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.aksw.rex.xpath.XPathLearner#getExtractionResults(java.util.List,
+	 * java.net.URL)
 	 */
 	@Override
 	public Set<ExtractionResult> getExtractionResults(List<Pair<XPathRule, XPathRule>> expressions, URL domain) {
 		Set<ExtractionResult> ex = new HashSet<ExtractionResult>();
-		
-		for (int i = 0; i < 100; i++) {
-			try {
-				ArrayList<Pair<String, String>> doc = index.getDocument(i);
-				Page d = new Page(doc.get(0).getRight(), null, doc.get(0).getLeft());
-				if (d.getTitle().startsWith(domain.toExternalForm())) {
-					for (Pair<XPathRule, XPathRule> p : expressions) {
-						XPathRule left = p.getLeft();
-						XPathRule right = p.getRight();
-						ExtractedValue s = left.applyOn(d);
-						ExtractedValue o = right.applyOn(d);
-						ex.add(new ExtractionResultImpl(s.getTextContent(), o.getTextContent(),d.getTitle()));
-					}
-				} else 
-					log.debug("Page removed:" + d.getTitle());
-			} catch (Exception e) {
-				log.error(e.getLocalizedMessage());
+
+		try {
+			for (int i = 0; i < index.size(); i++) {
+				try {
+
+					ArrayList<Pair<String, String>> doc = index.getDocument(i);
+					Page d = new Page(doc.get(0).getRight(), null, doc.get(0).getLeft());
+					if (d.getTitle().startsWith(domain.toExternalForm())) {
+						for (Pair<XPathRule, XPathRule> p : expressions) {
+							XPathRule left = p.getLeft();
+							XPathRule right = p.getRight();
+							ExtractedValue s = left.applyOn(d);
+							ExtractedValue o = right.applyOn(d);
+							ex.add(new ExtractionResultImpl(s.getTextContent(), o.getTextContent(), d.getTitle()));
+						}
+					} else
+						log.debug("Page removed:" + d.getTitle());
+				} catch (Exception e) {
+					log.error(e.getLocalizedMessage());
+				}
 			}
+		} catch (IOException e) {
+			log.error(e.getLocalizedMessage());
 		}
 		return ex;
 	}
@@ -173,11 +182,7 @@ public class ALFREDXPathLearner implements XPathLearner {
 		return index;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.aksw.rex.xpath.XPathLearner#setUseExactMatch(boolean)
-	 */
+
 	@Override
 	public void setUseExactMatch(boolean useExactMatch) {
 
@@ -189,4 +194,4 @@ public class ALFREDXPathLearner implements XPathLearner {
 	public List<Page> getTrainingPages() {
 		return this.trainingPages;
 	}
-} 
+}

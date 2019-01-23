@@ -64,4 +64,9 @@ public class ExtractionResultImpl implements ExtractionResult {
 		this.pageURL = pageURL;
 	}
     
+    
+    public String toString()
+    {
+		return String.format("[S = \"%s\", O = \"%s\", pageUrl = \"%s\"]", subject, object, pageURL);
+    }
 }
