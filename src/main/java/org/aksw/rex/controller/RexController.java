@@ -1,8 +1,6 @@
 package org.aksw.rex.controller;
 
-import java.net.URI;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,14 +21,11 @@ import org.aksw.rex.results.ExtractionResult;
 import org.aksw.rex.uris.URIGenerator;
 import org.aksw.rex.uris.URIGeneratorAGDISTIS;
 import org.aksw.rex.util.Pair;
-import org.aksw.rex.util.SPARQLUtil;
 import org.aksw.rex.xpath.XPathLearner;
 import org.aksw.rex.xpath.alfred.ALFREDXPathLearner;
 import org.dllearner.kb.sparql.SparqlEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import rules.xpath.XPathRule;
 
 import com.google.common.collect.Sets;
 import com.hp.hpl.jena.graph.Node;
@@ -40,6 +35,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 
 import edu.stanford.nlp.util.Quadruple;
+import rules.xpath.XPathRule;
 
 /**
  * The heart of REX This controller extracts for a given property and lucene
@@ -88,7 +84,7 @@ public class RexController {
 
         // The ManualDomainIdentifier provides a starting point domain for the crawler. REX would also be capable of
         // identifying a domain only by examples.
-        DomainIdentifier domainIdentifier = new ManualDomainIdentifier(new URL("https://www.imdb.com/title"));
+        DomainIdentifier domainIdentifier = new ManualDomainIdentifier(new URL("https://www.imdb.com/"));
         // DomainIdentifier domainIdentifier = new ManualDomainIdentifier(new
         // URL("http://www.goodreads.com/author/"));
 
@@ -98,7 +94,7 @@ public class RexController {
 
         // Our XPATHLearner learns a pair of XPATHs containing s,o for the given p
         XPathLearner xPathLearner = new ALFREDXPathLearner(crawlIndex);
-        xPathLearner.setUseExactMatch(false);
+        xPathLearner.setUseExactMatch(true);
         // XPathExtractor xPathExtractor = new XPathExtractor(crawlIndex);
         // XPathLearner xPathLearner = new XPathLearnerImpl(xPathExtractor,
         // endpoint);
@@ -107,7 +103,7 @@ public class RexController {
         // corresponding URIs from the knowledge base or new URIs if there are no to be found
         URIGenerator uriGenerator = new URIGeneratorAGDISTIS();
 
-        // After initialising the REX Controller with instances of components needed for our pipeline you can run the
+        // After initializing the REX Controller with instances of components needed for our pipeline you can run the
         // controller and see the results in the returned set of quadruples (provenance)
         Set<Quadruple<Node, Node, Node, String>> quadruples = new RexController(property, exampleGenerator,
                 domainIdentifier, xPathLearner, uriGenerator, new ConsistencyCheckerImpl(endpoint), endpoint).run();

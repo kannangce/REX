@@ -95,7 +95,7 @@ public class SimpleExampleGenerator implements ExampleGenerator {
 	@Override
 	public Set<Pair<Resource, Resource>> getNegativeExamples() {
 		Set<Pair<Resource, Resource>> examples = new HashSet<Pair<Resource, Resource>>();
-		examples.addAll(getNegativeExamplesRandomSubjectInDomain(10));
+		examples.addAll(getNegativeExamplesRandomSubjectInDomain(1));
 		// examples.addAll(getNegativeExamplesRandomObjectInRange(10));
 		// examples.addAll(getNegativeExamplesRandomSubjectInDomainRandomObjectInRange(10));
 		return examples;
@@ -288,7 +288,16 @@ public class SimpleExampleGenerator implements ExampleGenerator {
 				outerOffset = rnd.nextInt(propCnt);
 				// let (s p o) be in K, we get (s' p o) where s' is in the
 				// domain of p and (s' p o) is not in K
-				query = new ParameterizedSparqlString("SELECT ?s_false ?o WHERE " + "{?s_false a ?domain.  FILTER NOT EXISTS {?s_false ?p ?o.}" + "{SELECT ?o WHERE { ?s ?p ?o.} LIMIT 1}" + "} LIMIT 1");
+				// Modified query to get rid of the timeout error
+				query = new ParameterizedSparqlString(
+						"SELECT ?s_false ?o WHERE " + "{?s_false a ?domain.  FILTER NOT EXISTS {?s_false ?p ?o.}"
+								+ "{SELECT ?o WHERE { ?s ?p ?o.} LIMIT 1}"
+								+ "} LIMIT 1");
+				// Original
+//				query = new ParameterizedSparqlString(
+//						"SELECT ?s_false ?o WHERE " + "{?s_false a ?domain.  FILTER NOT EXISTS {?s_false ?p ?o.}"
+//								+ "{SELECT ?o WHERE { ?s ?p ?o.} LIMIT 1 OFFSET " + innerOffset + "}"
+//								+ "} LIMIT 1 OFFSET " + outerOffset);
 				query.setParam("p", property);
 				query.setParam("domain", domain);
 				rs = executeSelectQuery(query.asQuery());

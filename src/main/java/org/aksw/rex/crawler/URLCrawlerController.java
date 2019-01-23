@@ -175,8 +175,7 @@ public class URLCrawlerController {
 		numberOfCrawlers = 10;
 		int maxDepth = 0;
 		int maxOutgoingLinksToFollow = 0;
-		String userAgentName = "googlebot";
-		userAgentName = "crawler4j";
+		String userAgentName = "crawler4j";
 		int maxPagesToFetch = 100000;
 		CrawlConfig config = new CrawlConfig();
 		config.setCrawlStorageFolder(crawlStorageFolder);
